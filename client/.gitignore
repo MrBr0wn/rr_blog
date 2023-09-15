@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .env
 .env.development
+
+# Don't push up the coverage dir
+coverage
