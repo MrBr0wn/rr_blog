@@ -12,8 +12,8 @@ function PostDetails() {
       try {
         const json = await fetchPost(id)
         setPost(json)
-      } catch (e) {
-        console.log("An error occured:", e)
+      } catch (error) {
+        console.error("Failed to fetch the post: ", error)
       }
     }
     fetchCurrentPost()
@@ -23,8 +23,8 @@ function PostDetails() {
     try {
       await deletePostService(post.id)
       navigate("/")
-    } catch (e) {
-      console.error("Failed to delete the post: ", e)
+    } catch (error) {
+      console.error("Failed to delete the post: ", error)
     }
   }
 
