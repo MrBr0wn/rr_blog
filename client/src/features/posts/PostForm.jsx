@@ -5,7 +5,8 @@ function PostForm({ post, headerText, onSubmit, buttonText }) {
   const [formData, setFormData] = useState(
     post || { 
       title: "",
-      body: ""
+      body: "",
+      image: ""
     })
 
     return (
@@ -15,7 +16,7 @@ function PostForm({ post, headerText, onSubmit, buttonText }) {
           e.preventDefault()
           onSubmit(formData)
         }}>
-          <div>
+        <div>
           <label htmlFor="title">Title:</label>
           <input
             id="title"
@@ -27,6 +28,20 @@ function PostForm({ post, headerText, onSubmit, buttonText }) {
                 title: e.target.value
               })
             }
+          />
+        </div>
+        <div>
+          <label htmlFor="image">Image:</label>
+          <input type="file"
+            id="image"
+            accept="image/*"
+            onChange={(e) => {
+              setFormData({
+                ...formData, 
+                image: e.target.files[0]
+              })
+              console.log(e.target.files[0])
+            }}
           />
         </div>
         <div>
