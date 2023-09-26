@@ -19,10 +19,7 @@ async function fetchPost(id) {
 async function createPost(postData) {
   const response = await fetch(`${API_URL}`, {
     method: "POST",
-    headers: { 
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(postData)
+    body: postData
   })
 
   if (!response.ok) {
