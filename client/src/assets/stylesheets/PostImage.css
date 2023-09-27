@@ -1,0 +1,24 @@
+.post-image {
+  width: 20rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+}
+
+.post-image-stub {
+  width: 20rem;
+  height: 20rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.3);
+  background-color: #aaa;
+}
+
+.post-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
