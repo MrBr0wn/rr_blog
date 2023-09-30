@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 import PostsList from "./PostsList"
 import * as postsService from "../../services/postService"
+import "../../assets/stylesheets/PostImage.css"
 
 jest.mock("../../constants", () => ({
   API_URL: "http://your-test-api-url"

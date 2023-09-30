@@ -6,6 +6,6 @@ module.exports = {
   setupFilesAfterEnv: ["@testing-library/jest-dom"],
   testEnvironment: "jsdom",
   moduleNameMapper: {
-    "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+    "\\.(css|less|sass|scss)$": "identity-obj-proxy",
   },
 };
