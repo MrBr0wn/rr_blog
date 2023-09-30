@@ -3,6 +3,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { act } from "react-dom/test-utils"
 import PostEditForm from "./PostEditForm"
 import { fetchPost, updatePost } from "../../services/postService"
+import { objectToFormData } from "../../utils/formDataHelper"
 
 jest.mock("../../constants", () => ({
   API_URL: "http://your-test-api-url"
@@ -53,71 +54,74 @@ describe("PostEditForm component", () => {
     renderForm();
 
     await waitFor(() => {
-      expect(fetchPost).toHaveBeenCalledTimes(1);
+      expect(fetchPost).toHaveBeenCalledTimes(1)
     });
 
     const newPost = {
       title: "New Post Title",
       body: "New Post Body",
-    };
+      image: null
+    }
+
+    const formData = objectToFormData({ post: newPost })
 
     fireEvent.change(screen.getByLabelText(/title/i), {
-      target: { value: newPost.title },
-    });
+      target: { value: newPost.title }
+    })
 
     fireEvent.change(screen.getByLabelText(/body/i), {
-      target: { value: newPost.body },
-    });
+      target: { value: newPost.body }
+    })
 
     await act(async () => {
-      fireEvent.click(screen.getByText(/save/i));
-    });
+      fireEvent.click(screen.getByText(/save/i))
+    })
 
     await waitFor(() => {
-      expect(updatePost).toHaveBeenCalledTimes(1);
-      expect(updatePost).toHaveBeenCalledWith("1", newPost);
-    });
+      expect(updatePost).toHaveBeenCalledTimes(1)
+      expect(updatePost).toHaveBeenCalledWith("1", formData)
+    })
 
-    expect(screen.getByText("Post Detail")).toBeInTheDocument();
-  });
+    expect(screen.getByText("Post Detail")).toBeInTheDocument()
+  })
 
   it("shows a console error on update failure", async () => {
-    updatePost.mockRejectedValueOnce(new Error("Update failed"));
+    updatePost.mockRejectedValueOnce(new Error("Update failed"))
 
-    const consoleSpy = jest.spyOn(console, "error");
-    consoleSpy.mockImplementation(jest.fn());
+    const consoleSpy = jest.spyOn(console, "error")
+    consoleSpy.mockImplementation(jest.fn())
 
-    renderForm();
-
-    await waitFor(() => {
-      fireEvent.click(screen.getByText(/save/i));
-    });
+    renderForm()
 
     await waitFor(() => {
-      expect(updatePost).toHaveBeenCalledTimes(1);
-    });
+      fireEvent.click(screen.getByText(/save/i))
+    })
+
+    await waitFor(() => {
+      expect(updatePost).toHaveBeenCalledTimes(1)
+    })
     expect(consoleSpy).toHaveBeenCalledWith(
       "Failed to update the post: ",
       Error("Update failed")
-    );
-  });
+    )
+  })
 
   it("handles error when fetching the post", async () => {
-    const expectedError = new Error("Fetch failed");
-    fetchPost.mockRejectedValueOnce(expectedError);
+    const expectedError = new Error("Fetch failed")
+    fetchPost.mockRejectedValueOnce(expectedError)
 
-    const consoleSpy = jest.spyOn(console, "error");
-    consoleSpy.mockImplementation(jest.fn());
+    const consoleSpy = jest.spyOn(console, "error")
+    consoleSpy.mockImplementation(jest.fn())
 
-    renderForm();
+    renderForm()
 
     await waitFor(() => {
-      expect(fetchPost).toHaveBeenCalledTimes(1);
-    });
+      expect(fetchPost).toHaveBeenCalledTimes(1)
+    })
 
     expect(consoleSpy).toHaveBeenCalledWith(
       "Failed to fetch the post: ",
       expectedError
-    );
-  });
+    )
+  })
 })
