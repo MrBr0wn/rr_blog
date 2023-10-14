@@ -1,27 +1,30 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { fetchAllPosts, deletePost as deletePostService } from '../../services/postService'
+import { deletePost as deletePostService } from '../../services/postService'
 import "../../assets/stylesheets/PostImage.css"
+
+import SearchBar from "./SearchBar"
+import usePostsData from "../../hooks/usePostsData"
+import useURLSearchParam from "../../hooks/useURLSearchParam"
 
 function PostsList() {
   const [posts, setPosts] = useState([])
-  const [, setLoading] = useState(true)
-  const [, setError] = useState(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [debouncedSearchTerm, setDebouncedSearchTerm] =
+    useURLSearchParam("search")
+  const {
+    posts: fetchedPosts,
+    loading,
+    error
+  } = usePostsData(debouncedSearchTerm); // Note the change here
+
   
   useEffect(() => {
-    async function loadPosts() {
-      try {
-        const data = await fetchAllPosts()
-        setPosts(data)
-        setLoading(false)
-      } catch (e) {
-        setError(e)
-        setLoading(false)
-        console.error("Failed to fetch posts: ", e)
-      }
+    if (fetchedPosts) {
+      setPosts(fetchedPosts); // Update the posts state once fetchedPosts is available
     }
-    loadPosts()
-  }, [])
+  }, [fetchedPosts])
+  console.log("Test")
 
   const deletePost = async (id) => {
     try {
@@ -32,8 +35,23 @@ function PostsList() {
     }
   }
 
+  const handleImmediateSearchChange = (searchValue) => {
+    setSearchTerm(searchValue)
+  }
+
+  const handleDebouncedSearchChange = (searchValue) => {
+    setDebouncedSearchTerm(searchValue)
+  }
+
   return (
     <div>
+      <SearchBar
+        value={searchTerm}
+        onSearchChange={handleDebouncedSearchChange}
+        onImmediateChange={handleImmediateSearchChange}
+      />
+      {loading && <p>Loading...</p>}
+      {error && <p>Error loading posts.</p>}
       {posts.map((post) => (
         <div key={post.id} className="post-container">
           <h2>
