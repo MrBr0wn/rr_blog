@@ -38,7 +38,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3",
-    "vite": "^4.5.5",
+    "vite": "^4.5.9",
     "vite-plugin-testing": "^2.1.14"
   }
 }
